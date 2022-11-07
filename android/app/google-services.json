@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "311475993465",
+    "project_id": "feathergallery-c6208",
+    "storage_bucket": "feathergallery-c6208.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311475993465:android:c4e0ee475797a84ee64da8",
+        "android_client_info": {
+          "package_name": "com.example.feathers_gallery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311475993465-8ih2e2inmgbmhm4ohnmi2rfrhq1n3447.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCm9Y2QJy8RusGcVCf4IvK5LDOzKzORQ24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311475993465-8ih2e2inmgbmhm4ohnmi2rfrhq1n3447.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
