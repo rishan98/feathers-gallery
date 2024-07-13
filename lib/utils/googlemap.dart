@@ -73,7 +73,9 @@ class _GoogleMApState extends State<GoogleMAp> {
                         double.parse(element['lat']),
                         double.parse(element['lon']),
                       ),
-                      infoWindow: InfoWindow(title: element['species']));
+                      infoWindow: InfoWindow(
+                          title: element['species'],
+                          snippet: element['address']));
                 }
 
                 return GoogleMap(
@@ -91,7 +93,31 @@ class _GoogleMApState extends State<GoogleMAp> {
               }
               return const Text("loading");
             }),
+        // horizonBar(
+        //     num: 40,
+        //     wid: const Icon(
+        //       Icons.settings,
+        //       color: Colors.black,
+        //     )),
+        // horizonBar(
+        //     num: 110,
+        //     wid: const Icon(
+        //       Icons.favorite,
+        //       color: Colors.red,
+        //     )),
       ],
+    );
+  }
+
+  horizonBar({required Widget wid, required double num}) {
+    return Positioned(
+      top: num,
+      left: 10.0,
+      child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+              color: Colors.white70, borderRadius: BorderRadius.circular(30)),
+          child: Center(child: TextButton(onPressed: (() {}), child: wid))),
     );
   }
 }

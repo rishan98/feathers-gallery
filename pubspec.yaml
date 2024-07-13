@@ -51,10 +51,19 @@ dependencies:
   geocoding: ^2.0.4
   syncfusion_flutter_charts: ^19.1.54
   tflite: ^1.1.2
+  flutter_launcher_icons: ^0.10.0
+  wc_form_validators: ^1.0.0
+  rflutter_alert: ^2.0.4
+  fluttertoast: ^8.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/feather.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

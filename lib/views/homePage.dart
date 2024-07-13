@@ -1,4 +1,6 @@
 import 'package:feathers_gallery/utils/feature_card.dart';
+import 'package:feathers_gallery/views/appInfo.dart';
+import 'package:feathers_gallery/views/community.dart';
 import 'package:feathers_gallery/views/gallery.dart';
 import 'package:feathers_gallery/views/searchPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -121,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const HomePage()));
+                                              const AppInfo()));
                                 },
                                 child: const Text(
                                   'More Info',
@@ -177,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                     FeatureCard(
                       icon: 'assets/images/man.png',
                       iconName: 'Profile',
-                      page: Profile(),
+                      page: Community(),
                     ),
                   ],
                 ),

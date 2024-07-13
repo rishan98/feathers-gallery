@@ -17,12 +17,11 @@ class Gallery extends StatefulWidget {
 
 class _GalleryState extends State<Gallery> {
   String image = '';
+  String address = '';
+  String species = '';
+  Timestamp? date;
   String dropdownvalue1 = 'My';
-
-  var items1 = [
-    'My',
-    'All',
-  ];
+  var newdate;
 
   final firebaseUser = FirebaseAuth.instance.currentUser!;
   @override
@@ -51,7 +50,7 @@ class _GalleryState extends State<Gallery> {
                   ),
                 ),
               ),
-              _search(),
+              // _search(),
               SizedBox(
                 height: 25.0,
               ),
@@ -61,15 +60,15 @@ class _GalleryState extends State<Gallery> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        tooltip: "Pick Image",
-        label: const Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-        backgroundColor: Colors.yellow,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {},
+      //   tooltip: "Pick Image",
+      //   label: const Icon(
+      //     Icons.add,
+      //     color: Colors.black,
+      //   ),
+      //   backgroundColor: Colors.yellow,
+      // ),
     );
   }
 
@@ -164,8 +163,6 @@ class _GalleryState extends State<Gallery> {
                       color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ))),
-          horizonBar(name: 'Recent'),
-          horizonBar(name: 'Favourite'),
         ],
       ),
     );
@@ -246,7 +243,7 @@ class _GalleryState extends State<Gallery> {
         context: context,
         builder: (context) {
           return Container(
-            height: 350,
+            height: 450,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
             ),
@@ -257,7 +254,7 @@ class _GalleryState extends State<Gallery> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: const Text(
-                      'Gallery',
+                      'Gallery Image',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -278,9 +275,9 @@ class _GalleryState extends State<Gallery> {
                         .get()
                       ..then((ds) {
                         image = ds.get('image');
-                        // name = ds.get('name');
-                        // contact = ds.get('contact');
-                        // bus = ds.get('bus');
+                        species = ds.get('species');
+                        address = ds.get('address');
+                        date = ds.get('date');
                       }),
                     builder: (context, AsyncSnapshot snapshot) {
                       return !snapshot.hasData
@@ -289,13 +286,75 @@ class _GalleryState extends State<Gallery> {
                             )
                           : Container(
                               decoration: BoxDecoration(
-                                  color: Colors.deepPurple[500],
+                                  color: Colors.black12,
                                   borderRadius: BorderRadius.circular(12)),
                               width: MediaQuery.of(context).size.width / 3,
-                              height: MediaQuery.of(context).size.height / 3,
+                              height: MediaQuery.of(context).size.height / 2.5,
                               padding: const EdgeInsets.all(4),
                               child: Row(
-                                children: [Image.network(image)],
+                                children: [
+                                  Image.network(
+                                    image,
+                                    width: 150,
+                                    height: MediaQuery.of(context).size.height /
+                                        2.5,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 15.0, left: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Species :',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey),
+                                        ),
+                                        Text(
+                                          species,
+                                        ),
+                                        const SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        const Text(
+                                          'Location :',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey),
+                                        ),
+                                        SizedBox(
+                                            width: 200, child: Text(address)),
+                                        const SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        const Text(
+                                          'Date & Time :',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey),
+                                        ),
+                                        Text(date!.toDate().toString()),
+                                        SizedBox(
+                                          height: 40.0,
+                                        ),
+                                        // Container(
+                                        //     decoration: BoxDecoration(
+                                        //         color: Colors.red.shade900,
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(15)),
+                                        //     child: Center(
+                                        //         child: TextButton(
+                                        //             onPressed: (() {}),
+                                        //             child: Icon(
+                                        //               Icons.delete,
+                                        //               color: Colors.white,
+                                        //             )))),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ));
                     },
                   ),

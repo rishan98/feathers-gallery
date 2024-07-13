@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feathers_gallery/views/appInfo.dart';
+import 'package:feathers_gallery/views/gallery.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -142,29 +144,29 @@ class _ProfileState extends State<Profile> {
                                               ),
                                             ),
                                             const Spacer(),
-                                            Container(
-                                              height: 40,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.amber,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: TextButton(
-                                                onPressed: () async {
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) =>
-                                                  //             const HomePage()));
-                                                },
-                                                child: const Text(
-                                                  'Edit',
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                            ),
+                                            // Container(
+                                            //   height: 40,
+                                            //   width: 50,
+                                            //   decoration: BoxDecoration(
+                                            //       color: Colors.amber,
+                                            //       borderRadius:
+                                            //           BorderRadius.circular(
+                                            //               15)),
+                                            //   child: TextButton(
+                                            //     onPressed: () async {
+                                            //       // Navigator.push(
+                                            //       //     context,
+                                            //       //     MaterialPageRoute(
+                                            //       //         builder: (context) =>
+                                            //       //             const HomePage()));
+                                            //     },
+                                            //     child: const Text(
+                                            //       'Edit',
+                                            //       style: TextStyle(
+                                            //           color: Colors.black),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),
@@ -177,108 +179,157 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
               ),
-              Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Text(
-                              "No. of Cases",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            const Spacer(),
-                            FutureBuilder(
-                                future: totalUnits(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState !=
-                                      ConnectionState.done) {
-                                    return const Text('Loading');
-                                  }
-
-                                  return Container(
-                                    height: 60,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                        color: Colors.redAccent,
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: Center(
-                                        child: Text(
-                                      total,
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                  );
-                                }),
-                          ],
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 50, bottom: 20),
-                          child: Text(
-                            'Cases Dates',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection('data')
-                              .where("uid", isEqualTo: firebaseUser.uid)
-                              .snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            return !snapshot.hasData
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : Container(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: snapshot.data!.docs.map((e) {
-                                          Timestamp t = e['date'] as Timestamp;
-                                          DateTime date = t.toDate();
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 15),
-                                            child: Text(
-                                              '${date.year} - ${date.month} - ${date.day}',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.grey),
-                                            ),
-                                          );
-                                        }).toList()),
-                                  );
-                          },
-                        ),
-                      ],
-                    ),
-                  )),
-              
-              Container(
-                child: SfCircularChart(
-                  series: <CircularSeries>[
-                            // Render pie chart
-                            PieSeries<ChartData, String>(
-                                dataSource: chartData,
-                                pointColorMapper:(ChartData data,  _) => data.color,
-                                xValueMapper: (ChartData data, _) => data.x,
-                                yValueMapper: (ChartData data, _) => data.y
-                            )
-                        ]
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                child: Text(
+                  'Settings',
+                  style: TextStyle(fontSize: 20.0),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.white54,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    children: [
+                      _settingBar(
+                          wid: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ),
+                          name: 'App Info',
+                          page: AppInfo()),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      _settingBar(
+                          wid: const Icon(Icons.notification_add,
+                              color: Colors.white),
+                          name: 'Images',
+                          page: Gallery()),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      _settingBar(
+                          wid: const Icon(Icons.help, color: Colors.white),
+                          name: 'Help',
+                          page: AppInfo()),
+                    ],
+                  ),
+                ),
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       FutureBuilder(
+              //           future: totalUnits(),
+              //           builder: (context, snapshot) {
+              //             if (snapshot.connectionState !=
+              //                 ConnectionState.done) {
+              //               return const Text('Loading');
+              //             }
+
+              //             return Container(
+              //               height: 100,
+              //               width: MediaQuery.of(context).size.width / 2.5,
+              //               padding: EdgeInsets.all(15),
+              //               decoration: BoxDecoration(
+              //                   color: Colors.redAccent,
+              //                   borderRadius: BorderRadius.circular(12)),
+              //               child: Center(
+              //                   child: Column(
+              //                 children: [
+              //                   Text(
+              //                     total,
+              //                     style: const TextStyle(
+              //                         fontSize: 30,
+              //                         fontWeight: FontWeight.bold,
+              //                         color: Colors.white),
+              //                   ),
+              //                   Text(
+              //                     'Cases',
+              //                     style: const TextStyle(
+              //                         fontWeight: FontWeight.bold,
+              //                         color: Colors.white),
+              //                   )
+              //                 ],
+              //               )),
+              //             );
+              //           }),
+              //       Container(
+              //         height: 100,
+              //         width: MediaQuery.of(context).size.width / 2.5,
+              //         padding: EdgeInsets.all(15),
+              //         decoration: BoxDecoration(
+              //             color: Colors.redAccent,
+              //             borderRadius: BorderRadius.circular(12)),
+              //         child: Center(
+              //             child: Column(
+              //           children: [
+              //             Text(
+              //               '2',
+              //               style: const TextStyle(
+              //                   fontSize: 30,
+              //                   fontWeight: FontWeight.bold,
+              //                   color: Colors.white),
+              //             ),
+              //             Text(
+              //               'Recent',
+              //               style: const TextStyle(
+              //                   fontWeight: FontWeight.bold,
+              //                   color: Colors.white),
+              //             )
+              //           ],
+              //         )),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: FutureBuilder(
+                    future: totalUnits(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const Text('Loading');
+                      }
+
+                      return Container(
+                        height: 120,
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        padding: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Center(
+                            child: Column(
+                          children: [
+                            Text(
+                              total,
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              'Birds Images',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            )
+                          ],
+                        )),
+                      );
+                    }),
+              ),
+              SizedBox(
+                height: 20.0,
               )
             ],
           ),
@@ -287,18 +338,31 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  final List<ChartData> chartData = [
-            ChartData('David', 25, Colors.black),
-            ChartData('Steve', 38, Colors.red),
-            ChartData('Jack', 34, Colors.amber),
-            ChartData('Others', 52, Colors.lightBlue)
-        ];
-  
+  _settingBar(
+      {required Widget wid, required String name, required Widget page}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+            decoration: BoxDecoration(
+                color: Colors.deepPurple,
+                borderRadius: BorderRadius.circular(25)),
+            child: Center(child: TextButton(onPressed: (() {}), child: wid))),
+        Text(
+          name,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Container(
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(15)),
+            child: Center(
+                child: TextButton(
+                    onPressed: (() {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => page));
+                    }),
+                    child: Icon(Icons.arrow_forward)))),
+      ],
+    );
+  }
 }
-
- class ChartData {
-        ChartData(this.x, this.y, this.color);
-        final String x;
-        final double y;
-        final Color color;
-    }

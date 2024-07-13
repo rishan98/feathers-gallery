@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:feathers_gallery/views/homePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,8 +25,6 @@ class _CaptureImageState extends State<CaptureImage> {
   var date = DateTime.now();
   late Position position;
   String Address = '';
-
-  late TextEditingController _controller;
 
   Future getPosition() async {
     Position currentPosition =
@@ -55,7 +55,6 @@ class _CaptureImageState extends State<CaptureImage> {
   void initState() {
     getPosition();
     super.initState();
-    _controller = new TextEditingController(text: widget.name);
   }
 
   String url = '';
@@ -122,34 +121,44 @@ class _CaptureImageState extends State<CaptureImage> {
                   padding: const EdgeInsets.all(20.0),
                   child: Image.file(
                     widget.image!,
-                    width: 250,
-                    height: 250,
+                    width: 400,
+                    height: 400,
                   )),
-              TextField(
-                controller: _controller,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 50, right: 50),
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: TextButton(
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      uploadImage();
-                    },
-                  ),
-                ),
+              Center(
+                  child: Text(
+                widget.name,
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              )),
+              const SizedBox(
+                height: 15.0,
               ),
             ],
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          uploadImage();
+          _buildErrorMessage("Image added successfully.");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        },
+        tooltip: "Pick Image",
+        label: const Text('Save'),
+        backgroundColor: Colors.red,
+      ),
     );
+  }
+
+  void _buildErrorMessage(String text) {
+    Fluttertoast.showToast(
+        msg: text,
+        timeInSecForIosWeb: 5,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[600],
+        textColor: Colors.white,
+        fontSize: 14);
   }
 }

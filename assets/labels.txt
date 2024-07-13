@@ -1,5 +1,7 @@
-0 Boreal owl
-1 Common kingfisher
-2 Golden eagle
-3 Greater flamingo
-4 Mallard
+Boreal owl
+Common kingfisher
+Greater flamingo
+Mallard
+White stork
+Lilian's lovebird
+No feather detected.
