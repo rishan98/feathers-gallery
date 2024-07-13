@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                     FeatureCard(
                       icon: 'assets/images/man.png',
                       iconName: 'Profile',
-                      page: Community(),
+                      page: Profile(),
                     ),
                   ],
                 ),
